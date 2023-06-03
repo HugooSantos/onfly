@@ -27,8 +27,11 @@ services:
       MYSQL_USER: ${DB_USERNAME}
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
     volumes:
       - ./docker-compose/mysql:/docker-entrypoint-initdb.d
+    ports:
+      - "3388:3306"
     networks:
       - onfly
 
