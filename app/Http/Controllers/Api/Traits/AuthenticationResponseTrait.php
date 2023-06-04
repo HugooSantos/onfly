@@ -21,7 +21,7 @@ trait AuthenticationResponseTrait
     {
         return response()->json([
             'status' => 'error',
-            'message' => 'Falha ao Autenticar',
+            'message' => 'Falha ao Autenticar, usuário não encontrado.',
         ], 401);
     }
 }

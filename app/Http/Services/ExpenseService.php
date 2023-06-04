@@ -45,11 +45,13 @@ class ExpenseService
 
     public function store(ExpenseRequest $expenseRequest): JsonResponse
     {
-        Expense::create($expenseRequest->toArray());
+        $expense = Expense::create($expenseRequest->toArray())
+            ->get()
+            ->last();
 
         return $this->sucessResponse(
             'Despesa criada com sucesso',
-            new ExpenseResource($expenseRequest),
+            new ExpenseResource($expense),
             201
         );
     }
@@ -63,6 +65,7 @@ class ExpenseService
         }
 
         $this->authorize('update', $expense);
+
         $expense->update($expenseRequest->toArray());
 
         return $this->sucessResponse(
@@ -81,6 +84,7 @@ class ExpenseService
         }
 
         $this->authorize('delete', $expense);
+        
         $expense->delete();
 
         return $this->sucessResponse(

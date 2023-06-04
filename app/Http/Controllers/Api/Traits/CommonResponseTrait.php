@@ -15,14 +15,6 @@ trait CommonResponseTrait
         ], $code);
     }
 
-    protected function errorResponse(string $message, int $code): JsonResponse
-    {
-        return response()->json([
-            'status' => 'error',
-            'message' => $message,
-        ], $code);
-    }
-
     protected function expenseNotFound(int $expenseId): JsonResponse
     {
         return response()->json([
