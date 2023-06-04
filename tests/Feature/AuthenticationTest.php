@@ -11,7 +11,7 @@ class AuthenticationTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_catch_token_function_ok(): void
+    public function test_catch_token_function_sucess(): void
     {
         $user = $this->createUser();
         $body = $this->getBodyToCatchToken($user);
@@ -26,7 +26,7 @@ class AuthenticationTest extends TestCase
         ]);
     }
 
-    public function test_invalid_user_function_ok(): void
+    public function test_invalid_user_function_error(): void
     {
         $user = $this->createUser();
         $body = $this->getBodyToCatchToken($user);

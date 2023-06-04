@@ -28,7 +28,7 @@ class UserRequest extends FormRequest
             'name.max' => 'O campo nome deve ter no máximo 255 caracteres.',
             'email.required' => 'O campo email é obrigatório.',
             'email.email' => 'O campo e-mail informado não é válido',
-            'email.unique' => 'O campo e-mail informado já está em uso',
+            'email.unique' => 'O e-mail informado já está em uso',
             'email.max' => 'O campo e-mail deve ter no máximo 255 caracteres',
             'password.required' => 'O campo password é obrigatório',
             'password.min' => 'O campo password deve ter no mínimo 8 caracteres',
