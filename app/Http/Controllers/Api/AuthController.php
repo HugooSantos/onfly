@@ -17,7 +17,7 @@ class AuthController extends Controller
         $token = Auth::attempt($credentials);
 
         if ($token) {
-            return $this->getAuthenticatedResponse($token, $message);
+            return $this->getAuthenticatedResponse($token);
         }
 
         return $this->getFailedAuthenticatedResponse();
