@@ -19,7 +19,12 @@ class ExpenseService
     public function index(): JsonResponse
     {
         $userId = Auth::user()->id;
+
         $expenses = Expense::where('user_id', $userId)->get();
+
+        if (is_null($expenses->first())) {
+            return $this->emptyExpenseResponse();
+        };
 
         return $this->sucessResponse(
             'Todas as despesas desse usuário',
@@ -33,7 +38,7 @@ class ExpenseService
         $expense = Expense::find($expenseId);
 
         if (is_null($expense)) {
-            return $this->expenseNotFound($expenseId);
+            return $this->expenseNotFoundResponse($expenseId);
         }
 
         $this->authorize('show', $expense);
@@ -50,7 +55,7 @@ class ExpenseService
         $expense = Expense::create($expenseRequest->toArray())
             ->get()
             ->last();
-        
+
         $this->sendNotification($expense);
 
         return $this->sucessResponse(
@@ -65,7 +70,7 @@ class ExpenseService
         $expense = Expense::find($expenseId);
 
         if (is_null($expense)) {
-            return $this->expenseNotFound($expenseId);
+            return $this->expenseNotFoundResponse($expenseId);
         }
 
         $this->authorize('update', $expense);
@@ -84,11 +89,11 @@ class ExpenseService
         $expense = Expense::find($expenseId);
 
         if (is_null($expense)) {
-            return $this->expenseNotFound($expenseId);
+            return $this->expenseNotFoundResponse($expenseId);
         }
 
         $this->authorize('delete', $expense);
-        
+
         $expense->delete();
 
         return $this->sucessResponse(
@@ -99,7 +104,7 @@ class ExpenseService
     }
 
     private function sendNotification(Expense $expense): void
-    {   
+    {
         $user = Auth::user();
         Notification::send($user, new ExpenseNotify($expense));
     }

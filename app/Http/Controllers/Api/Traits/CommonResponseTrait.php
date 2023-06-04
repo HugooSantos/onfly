@@ -10,16 +10,23 @@ trait CommonResponseTrait
     protected function sucessResponse(string $message, ExpenseResource $data, int $code): JsonResponse
     {
         return response()->json([
-            'massage' => $message,
+            'message' => $message,
             'data' => $data,
         ], $code);
     }
 
-    protected function expenseNotFound(int $expenseId): JsonResponse
+    protected function expenseNotFoundResponse(int $expenseId): JsonResponse
     {
         return response()->json([
             'message' => 'Despesa de ID: ' . $expenseId
                 . ' não encontrada'
+        ], 404);
+    }
+
+    protected function emptyExpenseResponse(): JsonResponse
+    {
+        return response()->json([
+            'message' => 'Nenhuma despesa cadastrada ainda pra esse usuário'
         ], 404);
     }
 }

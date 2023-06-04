@@ -23,7 +23,7 @@ class ExpenseController extends Controller
     }
 
     public function show(int $expenseId): JsonResponse
-    {
+    {   
         return $this->expenseService->show($expenseId);
     }
 
