@@ -14,7 +14,7 @@ return new class extends Migration
                 ->constrained('users')
                 ->cascadeOnDelete();
             $table->string('description');
-            $table->dateTime('date');
+            $table->date('date');
             $table->decimal('amount', 10, 2);
             $table->timestamps();
         });

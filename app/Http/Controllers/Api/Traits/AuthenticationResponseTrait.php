@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Api\Traits;
 
-trait AuthenticationTrait
+use Illuminate\Http\JsonResponse;
+
+trait AuthenticationResponseTrait
 {
-    private function getAuthenticatedResponse(string $token): object
+    private function getAuthenticatedResponse(string $token): JsonResponse
     {
         return response()->json([
             'status' => 'Autenticado',
@@ -15,7 +17,7 @@ trait AuthenticationTrait
         ]);
     }
 
-    private function getFailedAuthenticatedResponse(): object
+    private function getFailedAuthenticatedResponse(): JsonResponse
     {
         return response()->json([
             'status' => 'error',

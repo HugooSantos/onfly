@@ -3,28 +3,42 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Expense;
+use App\Http\Requests\ExpenseRequest;
+use App\Http\Services\ExpenseService;
+use Illuminate\Http\JsonResponse;
 
 class ExpenseController extends Controller
 {
-    public function index()
+
+    protected $expenseService;
+
+    public function __construct()
     {
-        return Expense::all();
+        $this->expenseService = new ExpenseService();
     }
 
-    public function store(Request $request)
+    public function index(): JsonResponse
     {
-        Expense::create($request->all());
+        return $this->expenseService->index();
     }
 
-    public function update(Request $request, string $id)
+    public function show(int $expenseId): JsonResponse
     {
-        Expense::where('id', $id)->update($request->all(), [$id]);
+        return $this->expenseService->show($expenseId);
     }
 
-    public function destroy(string $id): void
+    public function store(ExpenseRequest $expenseRequest): JsonResponse
+    {  
+        return $this->expenseService->store($expenseRequest);
+    }
+
+    public function update(ExpenseRequest $expenseRequest, int $expenseId): JsonResponse
     {
-        Expense::destroy($id);
+        return $this->expenseService->update($expenseRequest, $expenseId);
+    }
+
+    public function destroy(int $expenseId): JsonResponse
+    {
+        return $this->expenseService->destroy($expenseId);
     }
 }
