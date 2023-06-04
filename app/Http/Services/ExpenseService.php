@@ -3,12 +3,14 @@
 namespace App\Http\Services;
 
 use App\Http\Controllers\Api\Traits\CommonResponseTrait;
-use App\Http\Requests\ExpenseRequest;
-use App\Http\Resources\ExpenseResource;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use App\Models\Expense;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Notification;
+use App\Http\Resources\ExpenseResource;
+use App\Http\Requests\ExpenseRequest;
+use App\Notifications\ExpenseNotify;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\JsonResponse;
+use App\Models\Expense;
 
 class ExpenseService
 {
@@ -48,6 +50,8 @@ class ExpenseService
         $expense = Expense::create($expenseRequest->toArray())
             ->get()
             ->last();
+        
+        $this->sendNotification($expense);
 
         return $this->sucessResponse(
             'Despesa criada com sucesso',
@@ -92,5 +96,11 @@ class ExpenseService
             new ExpenseResource($expense),
             200
         );
+    }
+
+    private function sendNotification(Expense $expense): void
+    {   
+        $user = Auth::user();
+        Notification::send($user, new ExpenseNotify($expense));
     }
 }
