@@ -46,7 +46,7 @@ docker build -t onfly . ; docker-compose up -d
 
 - Esse processo pode demorar um pouco, então que tal já irmos importando a sua colection do postman? 
 
-> Collection : [Collection](https://drive.google.com/uc?export=download&id=1WF7yRaUkRcduBXdVDxfwPgD6EECCZCK7)
+> Collection : [Collection](https://drive.google.com/uc?export=download&id=1h_cQozveOSt7_TSqemM4x0BPq7V45Ke1)
 
 > Env : [env](https://drive.google.com/uc?export=download&id=1B4cgnj9Z8fXlAqTn0ZQO_xouXyeFvNOn) 
 
