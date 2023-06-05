@@ -24,16 +24,16 @@ class ExpenseRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'description.required' => 'A descrição é obrigatória.',
-            'description.string' => 'A descrição deve ser uma string.',
-            'description.max' => 'A descrição deve ter no máximo 191 caracteres.',
-            'amount.required' => 'O valor da despesa é obrigatório.',
-            'amount.numeric' => 'O valor da despesa deve ser um número.',
-            'amount.min' => 'O valor da despesa deve ser maior que 0.',
-            'amount.not_in' => 'O valor da despesa deve ser maior que 0.',
-            'date.required' => 'A data da despesa é obrigatória.',
-            'date.date_format' => 'A data da despesa deve ser no formato YYYYY-MM-DD exemplo 2023-01-02.',
-            'date.before_or_equal' => 'A data da despesa não pode ser futura.',
+            'description.required' => 'O campo description é obrigatória.',
+            'description.string' => 'O campo description deve ser uma string.',
+            'description.max' => 'O campo description deve ter no máximo 191 caracteres.',
+            'amount.required' => 'O campo amount é obrigatório.',
+            'amount.numeric' => 'O campo amount deve ser um número.',
+            'amount.min' => 'O campo amount deve ser maior que 0.',
+            'amount.not_in' => 'O campo amount deve ser maior que 0.',
+            'date.required' => 'O campo date é obrigatória.',
+            'date.date_format' => 'O campo date deve ser no formato YYYYY-MM-DD exemplo 2023-01-02.',
+            'date.before_or_equal' => 'O campo date não pode ser futura.',
         ];
     }
 

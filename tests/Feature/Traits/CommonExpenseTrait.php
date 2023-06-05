@@ -10,7 +10,7 @@ trait CommonExpenseTrait
     {
         return [
             "description" => "teste",
-            "amount" => mt_rand(0, 30),
+            "amount" => mt_rand(1, 30),
             "date" => date('Y-m-d', strtotime('-' . mt_rand(0, 30) . ' days'))
         ];
     }
