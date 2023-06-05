@@ -1,66 +1,101 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<div align="center">
+ <h1> ✈️ Projeto onfly 🌎</h1>
+</div>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+- Clone o projeto (caso você esteja usando windows, pelo wsl 2):
 
-## About Laravel
+```
+git clone https://github.com/HugooSantos/onfly.git ; cd onfly
+```
+- Dentro da pasta onfly vamos copiar o .env.example do laravel e já fazer as alterações necessárias:
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+```
+cp .env.example .env
+```
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Dentro do arquivo .env vamos mexer nas configurações das constantes 
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+> Primeiro a do banco de dados:
 
-## Learning Laravel
+```
+DB_CONNECTION=mysql
+DB_HOST=onfly
+DB_PORT=3306
+DB_DATABASE=onfly
+DB_USERNAME= seu user
+DB_PASSWORD= sua senha 
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+> Agora a de e-mail (Caso precise de uma plataforma para configurar essas constantes recomendo a 
+[mailtrap](https://mailtrap.io/)):
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```
+MAIL_MAILER=smtp
+MAIL_HOST=seu host
+MAIL_PORT=sua porta
+MAIL_USERNAME=seu email
+MAIL_PASSWORD=sua senha
+MAIL_ENCRYPTION=tls
+QUEUE_DRIVER = database
+```
+- Vamos usar o docker como ambiente de desenvolvimento/teste, use o seguinte comando dentro do projeto:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```
+docker build -t onfly . ; docker-compose up -d
+```
 
-## Laravel Sponsors
+- Esse processo pode demorar um pouco, então que tal já irmos importando a sua colection do postman? 
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+> Collection : [Collection](https://drive.google.com/uc?export=download&id=1WF7yRaUkRcduBXdVDxfwPgD6EECCZCK7)
 
-### Premium Partners
+> Env : [env](https://drive.google.com/uc?export=download&id=1B4cgnj9Z8fXlAqTn0ZQO_xouXyeFvNOn) 
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+- Lembre de colocar o env do seu postman para facilitar o processo de teste:
 
-## Contributing
+<br>
+<div align="center">
+  <img alt="cgapp logo" src="./envPostman.png" width="700px"/>
+</div>
+<br>
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- Agora vamos acessar dentro do container (todos os comandos abaixo vão ser rodados dentro do container):
+```
+docker exec -it onfly-app bash
+```
+- Vamos rodar o composer install
 
-## Code of Conduct
+```
+composer install
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- Gerar a chave do laravel
 
-## Security Vulnerabilities
+```
+php artisan key:generate
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- E agora gerar a chave para o token JWT 
 
-## License
+```
+php artisan jwt:secret
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- Agora vamos rodar o migrate para criar as tabelas:
+```
+php artisan migrate
+```
+
+- Para executar os testes você irá usar:
+```
+php artisan test
+```
+- Abra um novo terminal (não feche o atual) e rode:
+
+```
+docker exec -it onfly-app bash
+```
+- Rode o worker para envio de emails dentro desse novo terminal:
+
+```
+php artisan queue:work
+```
