@@ -16,23 +16,6 @@ class ExpenseService
 {
     use AuthorizesRequests, CommonResponseTrait;
 
-    public function index(): JsonResponse
-    {
-        $userId = Auth::user()->id;
-
-        $expenses = Expense::where('user_id', $userId)->get();
-
-        if (is_null($expenses->first())) {
-            return $this->emptyExpenseResponse();
-        };
-
-        return $this->sucessResponse(
-            'Todas as despesas desse usuário',
-            new ExpenseResource($expenses),
-            200
-        );
-    }
-
     public function show(int $expenseId): JsonResponse
     {
         $expense = Expense::find($expenseId);
@@ -63,6 +46,12 @@ class ExpenseService
             new ExpenseResource($expense),
             201
         );
+    }
+
+    private function sendNotification(Expense $expense): void
+    {
+        $user = Auth::user();
+        Notification::send($user, new ExpenseNotify($expense));
     }
 
     public function update(ExpenseRequest $expenseRequest, int $expenseId): JsonResponse
@@ -103,9 +92,18 @@ class ExpenseService
         );
     }
 
-    private function sendNotification(Expense $expense): void
+    public function index(): JsonResponse
     {
-        $user = Auth::user();
-        Notification::send($user, new ExpenseNotify($expense));
+        $userId = Auth::user()->id;
+        $expenses = Expense::where('user_id', $userId)->get();
+
+        if (is_null($expenses->first())) {
+            return $this->emptyExpenseResponse();
+        };
+
+        return response()->json([
+            'message' => 'Todas as despesas desse usuário',
+            'data' => $expenses->toArray(),
+        ], 200);
     }
 }
