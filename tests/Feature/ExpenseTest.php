@@ -36,10 +36,10 @@ class ExpenseTest extends TestCase
     public function test_update_expense_sucess(): void
     {
         $token = $this->catchTokenAuth();
-        $expense = $this->createExpense();
-        $commomBody = $this->getCommonBodyDescription($expense);
+        $commomBody = $this->getCommonBodyDescription();
         $body = $this->changeBody($commomBody);
-        $route = '/api/expenses/' . $expense['data']['id'];
+        $route = $this->getRouteWithId($token);
+
         $response = $this->withHeader('Authorization', 'Bearer ' . $token)
             ->json('put', $route, $body);
 
@@ -66,15 +66,54 @@ class ExpenseTest extends TestCase
     public function test_delete_expense_sucess(): void
     {
         $token = $this->catchTokenAuth();
-        $body = $this->getCommonBodyDescription();
-        $response = $this->withHeader('Authorization', 'Bearer ' . $token)
-            ->json('post', '/api/expenses', $body)->getContent();
-        $route = '/api/expenses/' . json_decode($response, true)['data']['id'];
+        $route = $this->getRouteWithId($token);
 
         $responseDestroy = $this->withHeader('Authorization', 'Bearer ' . $token)
             ->json('delete', $route);
 
         $responseDestroy->assertStatus(200)
+            ->assertJsonStructure([
+                'message',
+                'data' => [
+                    'id',
+                    'user_id',
+                    'description',
+                    'amount',
+                    'date'
+                ]
+            ]);
+    }
+
+    public function test_list_all_user_expenses_sucess(): void
+    {
+        $token = $this->catchTokenAuth();
+        $this->createExpense($token);
+
+        $response = $this->withHeader('Authorization', 'Bearer ' . $token)
+            ->json('get', '/api/expenses');
+
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                'message',
+                'data' => [[
+                    'id',
+                    'user_id',
+                    'description',
+                    'amount',
+                    'date'
+                ]]
+            ]);
+    }
+
+    public function test_list_specific_expense_sucess(): void
+    {
+        $token = $this->catchTokenAuth();
+        $route = $this->getRouteWithId($token);
+
+        $response = $this->withHeader('Authorization', 'Bearer ' . $token)
+            ->json('get', $route);
+
+        $response->assertStatus(200)
             ->assertJsonStructure([
                 'message',
                 'data' => [

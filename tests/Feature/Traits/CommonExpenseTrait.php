@@ -15,13 +15,22 @@ trait CommonExpenseTrait
         ];
     }
 
-    protected function createExpense(): array
+    protected function createExpense(string $token): string
     {
-        $token = $this->catchTokenAuth();
         $body = $this->getCommonBodyDescription();
-        $response = $this->withHeader('Authorization', 'Bearer ' . $token)
-            ->json('post', '/api/expenses', $body)
-            ->getContent();
-        return json_decode($response, true);
+        return $this->withHeader('Authorization', 'Bearer ' . $token)
+            ->json('post', '/api/expenses', $body)->getContent();
+    }
+
+    protected function getLastCreatedExpenseId(string $token): int
+    {
+        $bodyResponse = $this->createExpense($token);
+        return json_decode($bodyResponse, true)['data']['id'];
+    }
+
+    protected function getRouteWithId(string $token): string
+    {
+        $expenseId = $this->getLastCreatedExpenseId($token);
+        return '/api/expenses/' . $expenseId;
     }
 }
